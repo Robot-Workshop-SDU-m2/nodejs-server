@@ -1,4 +1,5 @@
-var app = require('express')();
+var express = require('express');
+var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var SerialPort = require('serialport');
@@ -6,9 +7,10 @@ var SerialPort = require('serialport');
 var counter = 0;
 var port;
 
-var choords = [[2000,0,0],[1950,0,0],[1900,0,0],[1850,0,0],[1800,0,0],[1750,0,0],[1700,0,0],[1750,0,0],[1800,0,0],[1850,0,0],[1900,0,0],[1950,0,0]];
+var coords = [];//[[2000,0,0],[1950,0,0],[1900,0,0],[1850,0,0],[1800,0,0],[1750,0,0],[1700,0,0],[1750,0,0],[1800,0,0],[1850,0,0],[1900,0,0],[1950,0,0]];
+var coord;
 var pointer = 0;
-var clength = choords.length;
+//var clength = choords.length;
 
 SerialPort.list().then(
     data => {
@@ -25,9 +27,11 @@ SerialPort.list().then(
                     if(str.length != 0){
                         console.log(counter++ + " : " + str.length + " : " + str );
                         if(str == 'OK'){
-                            pointer = (pointer+1)%clength;
-                            console.log("G0;" + choords[pointer][0] + ";" + choords[pointer][1] + ";" + choords[pointer][2] + ";\n");
-                            port.write("G0;" + choords[pointer][0] + ";" + choords[pointer][1] + ";" + choords[pointer][2] + ";\n");
+                            coord = coords.shift()
+                            if(coord !== undefined){
+                                console.log("G0;" + coord[0] + ";" + coord[1] + ";" + coord[2] + ";\n");
+                                port.write("G0;" + coord[0] + ";" + coord[1] + ";" + coord[2] + ";\n");
+                            }
                         }
                     }
                    });
@@ -46,18 +50,26 @@ SerialPort.list().then(
     }
 );
 
-app.get('/', function(req, res){
-res.sendFile(__dirname + '/index.html');
-});
+/*app.get('/', function(req, res){
+    res.sendFile(__dirname + '/index.html');
+});*/
+app.use(express.static('www'));
 
 io.on('connection', function(socket){
-console.log("User connected");
-socket.on('chat message', function(msg){
-    console.log(msg);
-    io.emit("chat message", msg);
-    port.write(msg + '\n');
-});
-
+    console.log("User connected");
+    socket.on('chat message', function(msg){
+        console.log(msg);
+        port.write(msg + '\n');
+    });
+    socket.on('print', function(msg){
+        coords = msg.data;
+        coord = coords.shift()
+        for(var i = 0; i <3; i++)
+        if(coord !== undefined){
+            console.log("G0;" + coord[0] + ";" + coord[1] + ";" + coord[2]);
+            port.write("G0;" + coord[0] + ";" + coord[1] + ";" + coord[2] + ";\n");
+        }
+    });
 });
 
 http.listen(3000, function(){
