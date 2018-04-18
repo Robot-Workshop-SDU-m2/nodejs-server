@@ -26,7 +26,7 @@ SerialPort.list().then(
                    strings.forEach(str =>{
                     if(str.length != 0){
                         console.log(counter++ + " : " + str.length + " : " + str );
-                        if(str == 'OK'){
+                        if(str[0] == 'O'){
                             coord = coords.shift()
                             if(coord !== undefined){
                                 console.log("G0;" + coord[0] + ";" + coord[1] + ";" + coord[2] + ";\n");

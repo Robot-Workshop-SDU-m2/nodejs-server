@@ -98,24 +98,10 @@
 <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
 <!--<script src="js/material-components-web.min.js"></script>-->
 <script>
-  //mdc.autoInit();
-  //const slider = new MDCSlider(document.querySelector('.mdc-slider'));
-  //slider.listen('MDCSlider:change', () => console.log(`Value changed to ${slider.value}`));
   var socket = io();
-  $(function () {
-    
-    $('form').submit(function () {
-      socket.emit('chat message', "G0;" + $('#x').val() + ";" + $('#y').val() + ";" + $('#z').val() + ";");
-      $('#m').val('');
-      return false;
-    });
-    /*socket.on('chat message', function(msg){
-      $('#messages').append($('<li>').text(msg));
-    });*/
-  });
 </script>
 
-<body>
+<body>  
   <div id="grid">
     <canvas id="renderCanvas" touch-action="none"></canvas>
     <textarea id="codearea"></textarea>
@@ -224,7 +210,7 @@
       button.paddingBottom = "5px";
       button.fontSize = "10px";
       button.onPointerClickObservable.add(function(value){
-        socket.emit('chat message', "G0;" + Math.round(xCarr.position.y* 800) + ";" + Math.round(zCarr.position.y * 800) + ";" + Math.round(yCarr.position.y * 800) + ";");
+        socket.emit('chat message', "G0;" + Math.round(xCarr.position.y* 800) + ";" + Math.round(xCarr.position.y * 800) + ";" + Math.round(xCarr.position.y * 800) + ";");
       });
       panel.addControl(button);
 
@@ -281,7 +267,7 @@
       });
       document.getElementById("btnPrint").addEventListener("click",function () {
 
-        l = document.getElementById("codearea").value.split("\n").map(el => el = el.split(';').map(sel => sel = Math.round(sel*80)));
+        l = document.getElementById("codearea").value.split("\n").map(el => el = el.split(';').map(sel => sel = Math.round((291-sel)*80)));
         l = l.filter(el => el.length == 3);
         socket.emit("print",{ data: l});
       });
