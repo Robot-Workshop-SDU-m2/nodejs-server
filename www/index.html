@@ -210,7 +210,7 @@
       button.paddingBottom = "5px";
       button.fontSize = "10px";
       button.onPointerClickObservable.add(function(value){
-        socket.emit('chat message', "G0;" + Math.round(xCarr.position.y* 800) + ";" + Math.round(xCarr.position.y * 800) + ";" + Math.round(xCarr.position.y * 800) + ";");
+        socket.emit('chat message', {data : [ Math.round((29.1 - xCarr.position.y) * 800) , Math.round((29.1 - yCarr.position.y) * 800) , Math.round((29.1 - zCarr.position.y) * 800) ]});
       });
       panel.addControl(button);
 

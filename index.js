@@ -16,7 +16,7 @@ SerialPort.list().then(
     data => {
         for(var i = 0; i < data.length; i++){
             if(data[i].manufacturer == 'FTDI'){
-                 port = new SerialPort(data[i].comName,{baudRate: 500000}, function (err) {
+                 port = new SerialPort(data[i].comName,{baudRate: 1000000}, function (err) {
                     if (err) {
                         return console.log('Error: ', err.message);
                     }
@@ -27,10 +27,11 @@ SerialPort.list().then(
                     if(str.length != 0){
                         console.log(counter++ + " : " + str.length + " : " + str );
                         if(str[0] == 'O'){
-                            coord = coords.shift()
+                            coord = coords.shift();
+                            console.log(coord);
                             if(coord !== undefined){
-                                console.log("G0;" + coord[0] + ";" + coord[1] + ";" + coord[2] + ";\n");
-                                port.write("G0;" + coord[0] + ";" + coord[1] + ";" + coord[2] + ";\n");
+                                console.log("G0;" + coord[0] + ";" + coord[1] + ";" + coord[2]);
+                                port.write(coord);
                             }
                         }
                     }
@@ -59,18 +60,34 @@ io.on('connection', function(socket){
     console.log("User connected");
     socket.on('chat message', function(msg){
         console.log(msg);
-        port.write(msg + '\n');
+        port.write(intToCode(msg.data));
     });
     socket.on('print', function(msg){
-        coords = msg.data;
-        coord = coords.shift()
-        for(var i = 0; i <3; i++)
-        if(coord !== undefined){
-            console.log("G0;" + coord[0] + ";" + coord[1] + ";" + coord[2]);
-            port.write("G0;" + coord[0] + ";" + coord[1] + ";" + coord[2] + ";\n");
+        coords.length = 0;
+        msg.data.forEach( c => {
+            //console.log(c);
+            if(c.length === 3) coords.push(intToCode(c));
+        });
+        for(var i = 0; i <3; i++){
+            coord = coords.shift();
+            if(coord !== undefined){
+                //console.log("G0;" + coord[0] + ";" + coord[1] + ";" + coord[2]);
+                port.write(coord);
+            }
         }
     });
 });
+
+function intToCode(c){
+    buf = Buffer.alloc(9);
+    buf.write('G0');
+    buf.writeInt16BE(c[0],2);
+    buf.writeInt16BE(c[1],4);
+    buf.writeInt16BE(c[2],6);
+    buf.write('\n', 8);
+    console.log(buf);
+    return buf;
+}
 
 http.listen(3000, function(){
 console.log('listening on *:3000');
