@@ -9,3 +9,4 @@ To run the wep server run:
 ```
 node ./index.js
 ```
+Go to a browser and navigate to localhost
