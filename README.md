@@ -9,4 +9,4 @@ To run the wep server run:
 ```
 node ./index.js
 ```
-Go to a browser and navigate to [localhost:3000](localhost:3000)
+Go to a browser and navigate to [localhost:3000](http://localhost:3000)
