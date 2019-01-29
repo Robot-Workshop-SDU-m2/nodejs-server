@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto:300,400');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+html,body {
+  width: 100%;
+  height: 100%;
+  font: 13px Helvetica, Arial;
+}
+
+form {
+  background: #ccc;
+  padding: 3px;
+}
+
+form input {
+  border: 0;
+  padding: 10px;
+  margin-right: .5%;
+}
+
+
+#renderCanvas {
+  grid-area: robot;
+  display: block;
+  height: 100%;
+  width: 100%;
+  touch-action: none;
+  outline: none !important;
+}
+#codearea{
+  grid-area: text;
+  resize: none;
+  outline: none !important;
+  font-family: 'Roboto Mono', monospace;
+}
+#panel{
+  grid-area: panel;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #34495e;
+  padding: 5px;
+  grid-column-gap: 5px;
+}
+#panel > div{
+  padding: 5px;
+  background: #2c3e50;
+  color: #ecf0f1;
+}
+#panel > div input{
+  background: none;
+  color: inherit;
+  border: none;
+  width: 40px;
+}
+button{
+  background: #fff;
+  border: none;
+  border-radius: 2px;
+  color: #2c3e50;
+  padding: 2px 5px;
+  outline: none !important;
+}
+#fields{
+  grid-area: fields;
+  padding: 5px 5px 0 5px;
+  background: #34495e;
+  display: grid;
+  grid-template-columns: 68px auto min-content;
+  color: #fff;
+}
+#fields > div{
+  background: #2c3e50;
+  padding: 5px;
+}
+#fields input{
+  color: #2c3e50;
+  border: none;
+  border-radius: 2px;
+  outline: none !important;
+  padding: 2px;
+  width: 100%; 
+}
+
+#grid{
+  display: grid;
+  grid-template-areas: 
+  "robot text"
+  "robot fields"
+  "robot panel";
+  grid-template-columns: 50% 50%;
+  grid-template-rows: auto  min-content min-content;
+  height: 100%;
+}
