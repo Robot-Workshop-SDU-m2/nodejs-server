@@ -27,7 +27,7 @@ SerialPort.list().then(
                             coord = coords.shift();
                             console.log(coord);
                             if(coord !== undefined){
-                                console.log("G0;" + coord[0] + ";" + coord[1] + ";" + coord[2]);
+                                //console.log("G0;" + coord[0] + ";" + coord[1] + ";" + coord[2]);
                                 port.write(coord);
                             }
                         }
@@ -51,14 +51,19 @@ io.on('connection', function(socket){
         port.write(posToCode(msg.data));
     });
     socket.on('print', function(msg){
+        console.log("Print job arrived")
+        console.log(msg)
         coords.length = 0;
         msg.data.forEach( c => {
             if(c.length === 3) coords.push(posToCode(c));
         });
+        console.log(coords)
         for(var i = 0; i <30; i++){
             coord = coords.shift();
             if(coord !== undefined){
                 port.write(coord);
+            }else{
+                break;
             }
         }
     });
