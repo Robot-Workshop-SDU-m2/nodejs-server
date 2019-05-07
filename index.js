@@ -80,7 +80,7 @@ io.on('connection', function(socket){
 
 function posToCode(c){
     buf = Buffer.alloc(9);
-    buf.write("G0");
+    buf.write("G0", 0);
     buf.writeInt16BE(c[0],2);
     buf.writeInt16BE(c[1],4);
     buf.writeInt16BE(c[2],6);
