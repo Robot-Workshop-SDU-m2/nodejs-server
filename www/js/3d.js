@@ -144,9 +144,11 @@ var createScene = function () {
         tracePoints.length = 0;
     });
     document.getElementById("btnPrint").addEventListener("click", function () {
-
-        l = document.getElementById("codearea").value.split("\n").map(el => el = el.split('\t').map(sel => sel = Math.round((291 - sel) * 80)));
+        let xoff = document.getElementById("xOff").value;
+        console.log(xoff);
+        l = document.getElementById("codearea").value.split("\n").map(el => el = el.split('\t').map(sel => sel = Math.round((410 - Number(xoff) - sel ) * 80)));
         l = l.filter(el => el.length == 3);
+        console.log(l);
         socket.emit("print", { data: l });
     });
 
