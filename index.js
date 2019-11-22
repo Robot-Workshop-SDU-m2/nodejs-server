@@ -14,7 +14,7 @@ SerialPort.list().then(
     data => {
         for(var i = 0; i < data.length; i++){
             if(data[i].manufacturer == 'FTDI'){
-                 port = new SerialPort(data[i].comName,{baudRate: 500000}, function (err) {
+                 port = new SerialPort(data[i].comName,{baudRate: 1000000}, function (err) {
                     if (err) {
                         return console.log('Error: ', err.message);
                     }
