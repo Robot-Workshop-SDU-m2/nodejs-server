@@ -1,7 +1,7 @@
 # nodejs-server
 The nodejs server which host a webserver with a web interface to control and manage the robot.
 
-Install node 8.x and run:
+Install node 12.x and run:
 ```
 npm install
 ```
