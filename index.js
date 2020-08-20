@@ -54,22 +54,38 @@ app.use(express.static('www'));
 io.on('connection', function(socket){
     console.log("User connected");
     socket.on('chat message', function(msg){
-        console.log(msg);
         port.write(posToCode(msg.data));
     });
     socket.on('print', function(msg){
         console.log("Print job arrived")
-        //console.log(msg)
         coords.length = 0;
+
+        startPosition = [ 555, 555, 555 ];
+
+        if(7 < msg.data.length){
+          for (var i = 0; i < 1000; i++) {
+            coords.push(posToCode(startPosition));
+          }
+        }
+
         msg.data.forEach( c => {
             if(c.length === 3 && c != undefined) coords.push(posToCode(c));
         });
+        coords.push(posToCode(startPosition));
+
+        if(7 < msg.data.length){
+          for (var i = 0; i < 1000; i++) {
+            coords.push(posToCode(startPosition));
+          }
+        }
+
         //coords.push("G9\n");
         //console.log(coords)
+
         for(var i = 0; i <80; i++){
             coord = coords.shift();
             if(coord !== undefined){
-                console.log(coord);
+                //console.log(coord);
                 port.write(coord);
             }else{
                 break;
@@ -91,4 +107,3 @@ function posToCode(c){
 http.listen(3000, function(){
     console.log('listening on *:3000');
 });
-
