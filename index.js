@@ -60,22 +60,22 @@ io.on('connection', function(socket){
         console.log("Print job arrived")
         coords.length = 0;
 
-        startPosition = [ 555, 555, 555 ];
+        homePosition = [ 0, 0, 0 ];
 
         if(7 < msg.data.length){
           for (var i = 0; i < 1000; i++) {
-            coords.push(posToCode(startPosition));
+            coords.push(posToCode(homePosition));
           }
         }
 
         msg.data.forEach( c => {
             if(c.length === 3 && c != undefined) coords.push(posToCode(c));
         });
-        coords.push(posToCode(startPosition));
+        coords.push(posToCode(homePosition));
 
         if(7 < msg.data.length){
           for (var i = 0; i < 1000; i++) {
-            coords.push(posToCode(startPosition));
+            coords.push(posToCode(homePosition));
           }
         }
 
